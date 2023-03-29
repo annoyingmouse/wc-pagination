@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>&lt;wc-pagination&gt;</title>
+    <link rel="stylesheet" href="https://unpkg.com/sakura.css/css/sakura.css" type="text/css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+      body{
+        font-family: 'Figtree', sans-serif;
+        margin-bottom: 10rem;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        font-family: 'Figtree', sans-serif;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>&lt;wc-pagination&gt;</h1>
+    <p style="margin-bottom: 0;">
+      <a href="https://www.webcomponents.org/element/@annoyingmouse/wc-pagination"
+         rel="nofollow">
+        <img src="https://camo.githubusercontent.com/fa095f7c7b24972f3525b39a6f31c15626f3a4cc019314b4f19ad88ccfd47ddb/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f776562636f6d706f6e656e74732e6f72672d7075626c69736865642d626c75652e737667"
+             alt="Published on webcomponents.org"
+             data-canonical-src="https://img.shields.io/badge/webcomponents.org-published-blue.svg"
+             style="max-width: 100%;margin-bottom: 0;">
+      </a>
+    </p>
+    <p>Demo here: <a href="https://codepen.io/annoyingmouse/pen/YzOMYyv">https://codepen.io/annoyingmouse/pen/YzOMYyv</a></p>
+    <p>Adapted from the Vue component detailed here: <a href="https://drmsite.blogspot.com/2019/11/vuejs-pagination.html">VueJS Pagination</a>, following this article on <a href="https://www.a11ymatters.com/pattern/pagination/">a11ymatters</a>.</p>
+    <h2>Installation</h2>
+    <pre style='color:#000000;background:#ffffff;'><span style='color:#a65700; '>&lt;</span><span style='color:#800000; font-weight:bold; '>script</span><span style='color:#274796; '> </span><span style='color:#074726; '>type</span><span style='color:#808030; '>=</span><span style='color:#0000e6; '>"module"</span><span style='color:#274796; '> </span><span style='color:#074726; '>src</span><span style='color:#808030; '>=</span><span style='color:#0000e6; '>"https://unpkg.com/@annoyingmouse/wc-pagination/wc-pagination.js"</span><span style='color:#a65700; '>></span><span style='color:#a65700; '>&lt;/</span><span style='color:#800000; font-weight:bold; '>script</span><span style='color:#a65700; '>></span></pre>
+    <p>Alternatively:</p>
+    <pre style='color:#000000;background:#ffffff;'><span style='color:#a65700; '>&lt;</span><span style='color:#800000; font-weight:bold; '>script</span><span style='color:#274796; '> </span><span style='color:#074726; '>type</span><span style='color:#808030; '>=</span><span style='color:#0000e6; '>"module"</span><span style='color:#274796; '> </span><span style='color:#074726; '>src</span><span style='color:#808030; '>=</span><span style='color:#0000e6; '>"https://cdn.skypack.dev/@annoyingmouse/wc-pagination/wc-pagination.js"</span><span style='color:#a65700; '>></span><span style='color:#a65700; '>&lt;/</span><span style='color:#800000; font-weight:bold; '>script</span><span style='color:#a65700; '>></span></pre>
+    <p>You can use it minified by adding using this instead:</p>
+    <pre style='color:#000000;background:#ffffff;'><span style='color:#a65700; '>&lt;</span><span style='color:#800000; font-weight:bold; '>script</span><span style='color:#274796; '> </span><span style='color:#074726; '>type</span><span style='color:#808030; '>=</span><span style='color:#0000e6; '>"module"</span><span style='color:#274796; '> </span><span style='color:#074726; '>src</span><span style='color:#808030; '>=</span><span style='color:#0000e6; '>"[WHATEVER CDN]/@annoyingmouse/wc-pagination/dist/wc-pagination.min.js"</span><span style='color:#a65700; '>></span><span style='color:#a65700; '>&lt;/</span><span style='color:#800000; font-weight:bold; '>script</span><span style='color:#a65700; '>></span></pre>
+    <p>Please remember to change <code>[WHATEVER CDN]</code> to your favourite <abbr title="Content Delivery Network">CDN</abbr></p>
+    <p>While not at the start or end of the pagination there are buttons to allow a jump of 3 pages.</p>
+    <h2>Examples</h2>
+    <h3>Starting at page the first page</h3>
+    <wc-pagination total="1000"
+                   current="1"
+                   page-size="10"></wc-pagination>
+    <h3>Starting at page the first page with a small total</h3>
+    <wc-pagination total="23"
+                   current="1"
+                   page-size="10"></wc-pagination>
+    <h3>Starting at page the first page with a smaller total</h3>
+    <wc-pagination total="13"
+                   current="1"
+                   page-size="10"></wc-pagination>
+    <h3>Starting at page the first page with a minimal total</h3>
+    <wc-pagination total="1"
+                   current="1"
+                   page-size="10"></wc-pagination>
+    <h3>Starting at the last page</h3>
+    <wc-pagination total="1000"
+                   current="100"
+                   page-size="10"></wc-pagination>
+    <h3>Starting in the middle</h3>
+    <wc-pagination total="1000"
+                   current="50"
+                   page-size="10"></wc-pagination>
+    <h3>Iterating through the pages</h3>
+    <wc-pagination id="increment"
+                   total="1000"
+                   current="1"
+                   page-size="10"></wc-pagination>
+    <h3>From first to last</h3>
+    <wc-pagination id="first2last"
+                   total="1000"
+                   current="1"
+                   page-size="10"></wc-pagination>
+    <script src="main.js"></script>
+    <script type="module" src="wc-pagination.js"></script>
+  </body>
+</html>
