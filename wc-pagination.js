@@ -11,7 +11,7 @@ class WCPagination extends HTMLElement {
   constructor() {
     super()
     this.shadow = this.attachShadow({
-      mode: 'open',
+      mode: 'closed',
     })
   }
 
@@ -20,6 +20,12 @@ class WCPagination extends HTMLElement {
       <style>
         :host {
           display: inline-block;
+          --active-border-color: #2c3e50;
+          --active-background-color: #2c3e50;
+          --inactive-border-color: #e5e5e5;
+          --inactive-text-color: #7f8c8d;
+          --active-text-color: #fff;
+          --inactive-background-color: #fff;
         }
         ol {
           display: flex;
@@ -40,15 +46,15 @@ class WCPagination extends HTMLElement {
         ol li .content {
           text-decoration: none;
           font-weight: bold;
-          background-color: #fff;
-          color: #7f8c8d;
+          background-color: var(--inactive-background-color);
+          color: var(--inactive-text-color);
           display: flex;
           align-items: center;
           justify-content: center;
           width: 40px;
           height: 40px;
           margin: 0 3px;
-          border: 1px solid #e5e5e5;
+          border: 1px solid var(--inactive-border-color);
           user-select: none;
         }
         ol li:first-child .content{
@@ -58,9 +64,9 @@ class WCPagination extends HTMLElement {
           margin-right: 0;        
         }
         ol li[aria-current="true"] .content {
-          border-color: #2c3e50;
-          background-color: #2c3e50;
-          color: #fff;
+          border-color: var(--active-border-color);
+          background-color: var(--active-background-color);
+          color: var(--active-text-color);
           text-decoration: none;
         }
       </style>
@@ -145,12 +151,8 @@ class WCPagination extends HTMLElement {
     this.render()
   }
   attributeChangedCallback(name, oldValue, newValue) {
-    if (name === 'value') {
+    if (oldValue !== newValue) {
       this.render()
-    } else {
-      if (oldValue !== newValue) {
-        this.render()
-      }
     }
   }
 
