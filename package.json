@@ -1,6 +1,6 @@
 {
   "name": "@annoyingmouse/wc-pagination",
-  "version": "1.0.0",
+  "version": "0.0.9",
   "description": "This web component creates a pagination element.",
   "main": "wc-pagination.js",
   "scripts": {
