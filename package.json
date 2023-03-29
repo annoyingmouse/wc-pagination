@@ -2,7 +2,7 @@
   "name": "@annoyingmouse/wc-pagination",
   "version": "1.0.1",
   "description": "This web component creates a pagination element.",
-  "main": "wc-pagination.js",
+  "main": "dist/wc-pagination.min.js",
   "scripts": {
     "test": "echo \"No test specified\"",
     "build": "rollup -c"
