@@ -18,3 +18,7 @@ Adding a `total` number variable is the total number of records.
 Adding a `current` number variable is the current page.
 
 Adding a `page-size` number variable is the number of records to be shown on the page.
+
+## License
+
+MIT
