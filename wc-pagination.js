@@ -72,20 +72,11 @@ class WCPagination extends HTMLElement {
     return `
       <ol aria-label="Pagination Navigation">
         <li onClick="this.getRootNode().host.current = 1"
-            ${
-              this.current === 1
-                ? `
-              class="disabled"
-              disabled
-              aria-disabled
-              aria-label="Already on the first page"
-              title="Already on the first page"
-            `
-                : `
-              aria-label="Go to the first page"
-              title="Go to the first page"
-            `
-            }>
+          aria-label="${this.current === 1 ? "Already on the first page" : "Go to the first page"}"
+          title="${this.current === 1 ? "Already on the first page" : "Go to the first page"}"
+          ${this.current === 1 ? `class="disabled"` : ""}
+          ${this.current === 1 ? "disabled aria-disabled" : ""}
+        }>
           <div class="content">←</div>
         </li>
         ${
@@ -123,20 +114,11 @@ class WCPagination extends HTMLElement {
             : ""
         }
         <li onClick="this.getRootNode().host.current = this.getRootNode().host.totalPages"
-            ${
-              this.current === this.totalPages
-                ? `
-              class="disabled"
-              disabled
-              aria-disabled
-              aria-label="Already on the last page"
-              title="Already on the last page"
-            `
-                : `
-              aria-label="Go to the last page"
-              title="Go to the last page"
-            `
-            }>
+            aria-label="${this.current === this.totalPages ? "Already on the last page" : "Go to the last page"}"
+            title="${this.current === this.totalPages ? "Already on the last page" : "Go to the last page"}"
+            ${this.current === this.totalPages ? `class="disabled"` : ""}
+            ${this.current === this.totalPages ? "disabled aria-disabled" : ""}
+        }>
           <div class="content">→</div>
         </li>
       </ol>
@@ -184,6 +166,9 @@ class WCPagination extends HTMLElement {
   attributeChangedCallback(name, oldValue, newValue) {
     if (oldValue !== newValue) {
       this.render();
+      this.dispatchEvent(
+        new CustomEvent("page-change", { detail: { page: newValue}})
+      );
     }
   }
 
