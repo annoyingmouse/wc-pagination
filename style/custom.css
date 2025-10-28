@@ -1,0 +1,8 @@
+#custom-event-listener {
+  --active-border-color: #ff5a5f;
+  --active-background-color: #ff5a5f;
+  --inactive-border-color: #ffd6d8;
+  --inactive-text-color: #a23e48;
+  --active-text-color: #ffffff;
+  --inactive-background-color: #fff5f5;
+}

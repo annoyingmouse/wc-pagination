@@ -1,8 +1,8 @@
 // plugins/stripTemplateWhitespace.js
-import { createFilter } from '@rollup/pluginutils';
-import { parse } from '@babel/parser';
-import traverse from '@babel/traverse';
-import generate from '@babel/generator';
+import { createFilter } from "@rollup/pluginutils";
+import { parse } from "@babel/parser";
+import traverse from "@babel/traverse";
+import generate from "@babel/generator";
 
 /**
  * Rollup plugin to compress whitespace inside template literals.
@@ -14,7 +14,7 @@ import generate from '@babel/generator';
  */
 export default function stripTemplateWhitespace(options = {}) {
   const {
-    include = ['**/*.js', '**/*.ts', '**/*.jsx', '**/*.tsx'],
+    include = ["**/*.js", "**/*.ts", "**/*.jsx", "**/*.tsx"],
     exclude,
     html = true,
     tightText = false,
@@ -26,18 +26,18 @@ export default function stripTemplateWhitespace(options = {}) {
     let out = s;
 
     // 1) remove newlines and surrounding indentation/space
-    out = out.replace(/\s*\n\s*/g, '');
+    out = out.replace(/\s*\n\s*/g, "");
 
     // 2) collapse multiple spaces
-    out = out.replace(/\s{2,}/g, ' ');
+    out = out.replace(/\s{2,}/g, " ");
 
     if (html) {
       // 3) remove inter-tag gaps: <div>   <span> -> <div><span>
-      out = out.replace(/>\s+</g, '><');
+      out = out.replace(/>\s+</g, "><");
       if (tightText) {
         // 4) trim spaces right inside tags around text nodes
         //    <p>  Hello  </p> -> <p>Hello</p>
-        out = out.replace(/>\s+([^<]*?)\s+</g, '>$1<');
+        out = out.replace(/>\s+([^<]*?)\s+</g, ">$1<");
       }
     }
 
@@ -46,7 +46,7 @@ export default function stripTemplateWhitespace(options = {}) {
   };
 
   return {
-    name: 'strip-template-whitespace',
+    name: "strip-template-whitespace",
 
     transform(code, id) {
       if (!filter(id)) return null;
@@ -54,16 +54,18 @@ export default function stripTemplateWhitespace(options = {}) {
       let ast;
       try {
         ast = parse(code, {
-          sourceType: 'unambiguous',
+          sourceType: "unambiguous",
           sourceFilename: id,
           plugins: [
-            'jsx',
-            'typescript',
+            "jsx",
+            "typescript",
             // add more if you use them: 'decorators', 'classProperties', etc.
           ],
         });
       } catch (e) {
-        this.warn(`[strip-template-whitespace] Parse skipped for ${id}: ${e.message}`);
+        this.warn(
+          `[strip-template-whitespace] Parse skipped for ${id}: ${e.message}`,
+        );
         return null;
       }
 
@@ -81,7 +83,9 @@ export default function stripTemplateWhitespace(options = {}) {
 
             const afterRaw = compress(beforeRaw);
             const afterCooked =
-              typeof beforeCooked === 'string' ? compress(beforeCooked) : afterRaw;
+              typeof beforeCooked === "string"
+                ? compress(beforeCooked)
+                : afterRaw;
 
             if (afterRaw !== beforeRaw || afterCooked !== beforeCooked) {
               q.value.raw = afterRaw;

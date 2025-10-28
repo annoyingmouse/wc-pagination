@@ -166,9 +166,13 @@ class WCPagination extends HTMLElement {
   attributeChangedCallback(name, oldValue, newValue) {
     if (oldValue !== newValue) {
       this.render();
-      this.dispatchEvent(
-        new CustomEvent("page-change", { detail: { page: newValue}})
-      );
+      if (name === "current") {
+        this.dispatchEvent(
+          new CustomEvent("page-change", {
+            detail: { page: Number(newValue) },
+          }),
+        );
+      }
     }
   }
 
@@ -183,12 +187,6 @@ class WCPagination extends HTMLElement {
   }
   get pageSize() {
     return Number(this.getAttribute("page-size")) || 10;
-  }
-  get action() {
-    return this.getAttribute("action");
-  }
-  set action(value) {
-    this.setAttribute("action", value);
   }
 }
 globalThis.customElements.define("wc-pagination", WCPagination);
