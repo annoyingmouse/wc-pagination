@@ -3,5 +3,8 @@ main.js
 rollup.config.js
 .prettierrc
 style/sakura.css
+style/custom.css
+plugins/stripTemplateWhitespace.js
 .idea
 package.json
+biome.json
