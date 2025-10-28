@@ -87,8 +87,8 @@ class WCPagination extends HTMLElement {
       <ol aria-label="Pagination Navigation"
           role="navigation" >
         <li onClick="this.getRootNode().host.current = 1"
-            aria-label="${this.current === 1 ? "Already page 1" : "Goto page 1"}"
-            title="${this.current === 1 ? "Already page 1" : "Goto page 1"}"
+            aria-label="${this.current === 1 ? "Already on page 1" : "Goto page 1"}"
+            title="${this.current === 1 ? "Already on page 1" : "Goto page 1"}"
             ${this.current === 1 ? `class="disabled"` : ""}
         }>
           <button type="button"

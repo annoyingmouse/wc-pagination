@@ -188,7 +188,7 @@ describe("wc-pagination", () => {
     const firstLi = getButtonByText(el.shadowRoot, "←").closest("li");
     const lastLi = getButtonByText(el.shadowRoot, "→").closest("li");
 
-    expect(firstLi.getAttribute("aria-label")).toBe("Already page 1");
+    expect(firstLi.getAttribute("aria-label")).toBe("Already on page 1");
     expect(lastLi.getAttribute("aria-label")).toBe("Goto page\u00A05");
   });
 
