@@ -6,7 +6,7 @@ class WCPagination extends HTMLElement {
   constructor() {
     super();
     this.shadow = this.attachShadow({
-      mode: "closed",
+      mode: "open",
     });
   }
 
@@ -39,6 +39,10 @@ class WCPagination extends HTMLElement {
           cursor: not-allowed;
         }
         ol li .content {
+          background: none;
+          padding: 0;
+          font: inherit;
+          cursor: pointer;
           text-decoration: none;
           font-weight: bold;
           background-color: var(--inactive-background-color);
@@ -59,10 +63,20 @@ class WCPagination extends HTMLElement {
           margin-right: 0;        
         }
         ol li[aria-current="true"] .content {
+          border: none;
+          background: none;
+          padding: 0;
+          margin: 0;
+          font: inherit;
+          cursor: pointer;
           border-color: var(--active-border-color);
           background-color: var(--active-background-color);
           color: var(--active-text-color);
           text-decoration: none;
+        }
+        ol li .content:focus {
+          outline: 2px solid var(--active-background-color);
+          outline-offset: 2px;
         }
       </style>
     `;
@@ -70,22 +84,27 @@ class WCPagination extends HTMLElement {
 
   get html() {
     return `
-      <ol aria-label="Pagination Navigation">
+      <ol aria-label="Pagination Navigation"
+          role="navigation" >
         <li onClick="this.getRootNode().host.current = 1"
-          aria-label="${this.current === 1 ? "Already on the first page" : "Go to the first page"}"
-          title="${this.current === 1 ? "Already on the first page" : "Go to the first page"}"
-          ${this.current === 1 ? `class="disabled"` : ""}
-          ${this.current === 1 ? "disabled aria-disabled" : ""}
+            aria-label="${this.current === 1 ? "Already on the first page" : "Go to the first page"}"
+            title="${this.current === 1 ? "Already on the first page" : "Go to the first page"}"
+            ${this.current === 1 ? `class="disabled"` : ""}
         }>
-          <div class="content">←</div>
+          <button type="button"
+                  class="content"
+                  ${this.current === 1 ? "disabled aria-disabled" : ""}>
+            ←
+          </button>
         </li>
         ${
           (this.totalPages > 3) && (this.current - 2 >= 1)
             ? `
           <li onClick="this.getRootNode().host.current  = this.getRootNode().host.current - 3 < 1 ? 1 : this.getRootNode().host.current - 3"
-              aria-label="Jump three pages backward"
-              title="Jump three pages backward">
-            <div class="content">…</div
+              aria-label="Go to page ${this.current - 3}"
+              title="Go to page ${this.current - 3}">
+            <button type="button"
+                    class="content">…</button>
           </li>
         `
             : ""
@@ -94,10 +113,13 @@ class WCPagination extends HTMLElement {
           .map(
             (page) => `
           <li onClick="this.getRootNode().host.current = ${page}"
+              data-testid="page-${page}"
+              data-page="${page}"
               aria-label="${page === this.current ? "Current page" : "Go to page " + page}"
               title="${page === this.current ? "Current page" : "Go to page " + page}"
               ${page === this.current ? `aria-current="true"` : ""}>  
-            <div class="content">${page}</div>
+            <button type="button"
+                    class="content">${page}</button>
           </li>
         `,
           )
@@ -106,9 +128,10 @@ class WCPagination extends HTMLElement {
           (this.totalPages > 3) && (this.current + 2 <= this.totalPages)
             ? `
           <li onClick="this.getRootNode().host.current = this.getRootNode().host.current + 3 <= this.getRootNode().host.totalPages ? this.getRootNode().host.current + 3 : this.getRootNode().host.totalPages"
-              aria-label="Jump three pages forward"
-              title="Jump three pages forward">
-            <div class="content">…</div
+              aria-label="Go to page ${this.current + 3}"
+              title="Go to page ${this.current + 3}">
+            <button type="button"
+                    class="content">…</button>
           </li>
         `
             : ""
@@ -117,9 +140,12 @@ class WCPagination extends HTMLElement {
             aria-label="${this.current === this.totalPages ? "Already on the last page" : "Go to the last page"}"
             title="${this.current === this.totalPages ? "Already on the last page" : "Go to the last page"}"
             ${this.current === this.totalPages ? `class="disabled"` : ""}
-            ${this.current === this.totalPages ? "disabled aria-disabled" : ""}
         }>
-          <div class="content">→</div>
+          <button type="button"
+                  class="content"
+                  ${this.current === this.totalPages ? "disabled aria-disabled" : ""}>
+            →
+          </button>
         </li>
       </ol>
     `;
@@ -156,7 +182,6 @@ class WCPagination extends HTMLElement {
   }
 
   render() {
-    this.totalPages = Math.ceil(this.total / this.pageSize);
     this.shadow.innerHTML = `${this.css}${this.html}`;
   }
 
@@ -177,7 +202,7 @@ class WCPagination extends HTMLElement {
   }
 
   get total() {
-    return Number(this.getAttribute("total"));
+    return Number.parseInt(this.getAttribute("total") || "0", 10);
   }
   get current() {
     return Number(this.getAttribute("current")) || 1;
@@ -186,7 +211,10 @@ class WCPagination extends HTMLElement {
     this.setAttribute("current", value.toString());
   }
   get pageSize() {
-    return Number(this.getAttribute("page-size")) || 10;
+    return Number.parseInt(this.getAttribute("page-size") || "10", 10);
+  }
+  get totalPages() {
+    return Math.ceil(this.total / this.pageSize);
   }
 }
 globalThis.customElements.define("wc-pagination", WCPagination);
