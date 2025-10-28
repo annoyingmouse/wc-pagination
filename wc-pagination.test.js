@@ -166,7 +166,7 @@ describe("wc-pagination", () => {
     ).find((btn) => btn.closest("li").getAttribute("aria-current") === "true");
     expect(currentPageButton).toBeTruthy();
     expect(currentPageButton.closest("li").getAttribute("aria-label")).toBe(
-      "Current page",
+      "Current page, page 2",
     );
 
     // Ensure other buttons lack aria-current
@@ -189,9 +189,9 @@ describe("wc-pagination", () => {
     const lastLi = getButtonByText(el.shadowRoot, "→").closest("li");
 
     expect(firstLi.getAttribute("aria-label")).toBe(
-      "Already on the first page",
+      "Already page 1",
     );
-    expect(lastLi.getAttribute("aria-label")).toBe("Go to the last page");
+    expect(lastLi.getAttribute("aria-label")).toBe("Goto page 5");
   });
 
   test("has proper role and label on root <ol>", () => {
