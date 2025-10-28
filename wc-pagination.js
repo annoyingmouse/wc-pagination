@@ -101,8 +101,8 @@ class WCPagination extends HTMLElement {
           (this.totalPages > 3) && (this.current - 2 >= 1)
             ? `
           <li onClick="this.getRootNode().host.current  = this.getRootNode().host.current - 3 < 1 ? 1 : this.getRootNode().host.current - 3"
-              aria-label="Goto page ${this.current - 3}"
-              title="Goto page ${this.current - 3}">
+              aria-label="Goto page&nbsp;${this.current - 3}"
+              title="Goto page&nbsp;${this.current - 3}">
             <button type="button"
                     class="content">…</button>
           </li>
@@ -115,8 +115,8 @@ class WCPagination extends HTMLElement {
           <li onClick="this.getRootNode().host.current = ${page}"
               data-testid="page-${page}"
               data-page="${page}"
-              aria-label="${page === this.current ? `Current page, page ${page}` : `Goto page ${page}`}"
-              title="${page === this.current ? "Current page" : `Goto page ${page}`}"
+              aria-label="${page === this.current ? `Current page, page&nbsp;${page}` : `Goto page&nbsp;${page}`}"
+              title="${page === this.current ? `Current page, page&nbsp;${page}` : `Goto page&nbsp;page`}"
               ${page === this.current ? `aria-current="true"` : ""}>  
             <button type="button"
                     class="content">${page}</button>
@@ -128,8 +128,8 @@ class WCPagination extends HTMLElement {
           (this.totalPages > 3) && (this.current + 2 <= this.totalPages)
             ? `
           <li onClick="this.getRootNode().host.current = this.getRootNode().host.current + 3 <= this.getRootNode().host.totalPages ? this.getRootNode().host.current + 3 : this.getRootNode().host.totalPages"
-              aria-label="Goto page ${this.current + 3}"
-              title="Goto page ${this.current + 3}">
+              aria-label="Goto page&nbsp;${this.current + 3}"
+              title="Goto page&nbsp;${this.current + 3}">
             <button type="button"
                     class="content">…</button>
           </li>
@@ -137,8 +137,8 @@ class WCPagination extends HTMLElement {
             : ""
         }
         <li onClick="this.getRootNode().host.current = this.getRootNode().host.totalPages"
-            aria-label="${this.current === this.totalPages ? `Already on page ${this.totalPages}` : `Goto page ${this.totalPages}`}"
-            title="${this.current === this.totalPages ? `Already on page ${this.totalPages}` : `Goto page ${this.totalPages}`}"
+            aria-label="${this.current === this.totalPages ? `Already on page&nbsp;${this.totalPages}` : `Goto page&nbsp;${this.totalPages}`}"
+            title="${this.current === this.totalPages ? `Already on page&nbsp;${this.totalPages}` : `Goto page&nbsp;${this.totalPages}`}"
             ${this.current === this.totalPages ? `class="disabled"` : ""}
         }>
           <button type="button"
