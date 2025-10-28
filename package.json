@@ -5,7 +5,9 @@
   "main": "wc-pagination.js",
   "scripts": {
     "test": "echo \"No test specified\"",
-    "build": "rollup -c"
+    "build": "rollup -c",
+    "lint": "npx @biomejs/biome format --write",
+    "oxlint": "pnpm dlx oxlint"
   },
   "repository": {
     "type": "git",
