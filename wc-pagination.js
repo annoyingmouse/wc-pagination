@@ -1,18 +1,13 @@
 class WCPagination extends HTMLElement {
-
   static get observedAttributes() {
-    return [
-      'total',
-      'pageSize',
-      'current'
-    ]
+    return ["total", "pageSize", "current", "action"];
   }
 
   constructor() {
-    super()
+    super();
     this.shadow = this.attachShadow({
-      mode: 'closed',
-    })
+      mode: "closed",
+    });
   }
 
   get css() {
@@ -70,103 +65,145 @@ class WCPagination extends HTMLElement {
           text-decoration: none;
         }
       </style>
-    `
+    `;
   }
 
   get html() {
     return `
       <ol aria-label="Pagination Navigation">
         <li onClick="this.getRootNode().host.current = 1"
-            aria-label="Go to the first page"
-            ${this.current === 1 ? `
+            ${
+              this.current === 1
+                ? `
               class="disabled"
               disabled
-            ` : ''}>
+              aria-disabled
+              aria-label="Already on the first page"
+              title="Already on the first page"
+            `
+                : `
+              aria-label="Go to the first page"
+              title="Go to the first page"
+            `
+            }>
           <div class="content">←</div>
         </li>
-        ${(this.totalPages > 3) && ((this.current - 2) >= 1)  ? `
+        ${
+          (this.totalPages > 3) && (this.current - 2 >= 1)
+            ? `
           <li onClick="this.getRootNode().host.current  = this.getRootNode().host.current - 3 < 1 ? 1 : this.getRootNode().host.current - 3"
               aria-label="Jump three pages backward"
               title="Jump three pages backward">
             <div class="content">…</div
           </li>
-        ` : ''}
-        ${this.generatePages().map(page => `
+        `
+            : ""
+        }
+        ${this.generatePages()
+          .map(
+            (page) => `
           <li onClick="this.getRootNode().host.current = ${page}"
-              aria-label="${page === this.current ? 'Current page' : 'Go to page ' + page}"
-              ${page === this.current ? `aria-current="true"` : ''}>  
+              aria-label="${page === this.current ? "Current page" : "Go to page " + page}"
+              title="${page === this.current ? "Current page" : "Go to page " + page}"
+              ${page === this.current ? `aria-current="true"` : ""}>  
             <div class="content">${page}</div>
           </li>
-        `).join('')}
-        ${(this.totalPages > 3) && ((this.current + 2) <= this.totalPages) ? `
+        `,
+          )
+          .join("")}
+        ${
+          (this.totalPages > 3) && (this.current + 2 <= this.totalPages)
+            ? `
           <li onClick="this.getRootNode().host.current = this.getRootNode().host.current + 3 <= this.getRootNode().host.totalPages ? this.getRootNode().host.current + 3 : this.getRootNode().host.totalPages"
               aria-label="Jump three pages forward"
               title="Jump three pages forward">
             <div class="content">…</div
           </li>
-        `: ''}
+        `
+            : ""
+        }
         <li onClick="this.getRootNode().host.current = this.getRootNode().host.totalPages"
-            aria-label="Go to the last page"
-            ${this.current === this.totalPages ? `
+            ${
+              this.current === this.totalPages
+                ? `
               class="disabled"
               disabled
-            ` : ''}>
+              aria-disabled
+              aria-label="Already on the last page"
+              title="Already on the last page"
+            `
+                : `
+              aria-label="Go to the last page"
+              title="Go to the last page"
+            `
+            }>
           <div class="content">→</div>
         </li>
       </ol>
-    `
+    `;
   }
 
   generatePages() {
-    const arr = []
-    if(this.current === 1){
-      for(let i = 1, count = 0; i <= this.totalPages && count < 3; i++, count++){
-        arr.push(i)
-      }
+    const { current, totalPages } = this;
+    const maxVisiblePages = 3;
+
+    // 1. Determine the 'start' page of the range.
+    let start;
+    if (current === 1) {
+      // If on the first page, start at 1.
+      start = 1;
+    } else if (current === totalPages) {
+      // If on the last page, start at the largest number
+      // that still allows for 'maxVisiblePages' before the end.
+      start = Math.max(1, totalPages - maxVisiblePages + 1);
     } else {
-      if(this.current === this.totalPages){
-        for(let i = this.totalPages, count = 0; i >= 1 && count < 3; i--, count++){
-          arr.push(i)
-        }
-        arr.reverse()
-      } else {
-        arr.push(this.current)
-        if(this.current < this.totalPages){
-          arr.push(this.current + 1)
-        }
-        if(this.current >= 1){
-          arr.unshift(this.current - 1)
-        }
-      }
+      // If in the middle, start one page before the current page.
+      start = Math.max(1, current - 1);
     }
-    return arr
+
+    // 2. Determine the 'end' page of the range.
+    // The range should end either 3 pages after the start, or at totalPages, whichever is smaller.
+    const end = Math.min(totalPages, start + maxVisiblePages - 1);
+
+    // 3. Generate the array.
+    const pages = [];
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+    return pages;
   }
 
   render() {
-    this.totalPages = Math.ceil(this.total / this.pageSize)
-    this.shadow.innerHTML = `${this.css}${this.html}`
+    this.totalPages = Math.ceil(this.total / this.pageSize);
+    this.shadow.innerHTML = `${this.css}${this.html}`;
   }
 
   connectedCallback() {
-    this.render()
+    this.render();
   }
   attributeChangedCallback(name, oldValue, newValue) {
     if (oldValue !== newValue) {
-      this.render()
+      this.render();
     }
   }
 
   get total() {
-    return Number(this.getAttribute('total'))
+    return Number(this.getAttribute("total"));
   }
   get current() {
-    return Number(this.getAttribute('current')) || 1
+    return Number(this.getAttribute("current")) || 1;
   }
   set current(value) {
-    this.setAttribute('current', value.toString())
+    this.setAttribute("current", value.toString());
   }
   get pageSize() {
-    return Number(this.getAttribute('page-size')) || 10
+    return Number(this.getAttribute("page-size")) || 10;
+  }
+  get action() {
+    return this.getAttribute("action");
+  }
+  set action(value) {
+    this.setAttribute("action", value);
   }
 }
-window.customElements.define('wc-pagination', WCPagination)
+globalThis.customElements.define("wc-pagination", WCPagination);
