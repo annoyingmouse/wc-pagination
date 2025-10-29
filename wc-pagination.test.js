@@ -39,8 +39,12 @@ describe("wc-pagination", () => {
 
   // --- Helper: query buttons by visible text ---
   function getButtonByText(shadowRoot, text) {
-    return Array.from(shadowRoot.querySelectorAll("button.content")).find(
-      (btn) => btn.textContent.trim() === text,
+    return Array.from(shadowRoot.querySelectorAll("button")).find(
+      (btn) =>
+        btn.textContent
+          .trim()
+          .replace(/(\r\n|\n|\r)/gm, "")
+          .replace(/  +/g, " ") === text,
     );
   }
 
@@ -106,7 +110,11 @@ describe("wc-pagination", () => {
     el.setAttribute("current", "5"); // middle page → ellipsis should appear
     document.body.appendChild(el);
 
-    const ellipsisButton = getButtonByText(el.shadowRoot, "…");
+    const ellipsisButton = getButtonByText(
+      el.shadowRoot,
+      "… Jump back three pages, to page 2",
+    );
+    console.log(ellipsisButton);
     expect(ellipsisButton).toBeTruthy();
 
     const handlePageChange = jest.fn();
@@ -162,19 +170,19 @@ describe("wc-pagination", () => {
     document.body.appendChild(el);
 
     const currentPageButton = Array.from(
-      el.shadowRoot.querySelectorAll("button.content"),
-    ).find((btn) => btn.closest("li").getAttribute("aria-current") === "true");
+      el.shadowRoot.querySelectorAll("button"),
+    ).find((btn) => btn.getAttribute("aria-current") === "page");
     expect(currentPageButton).toBeTruthy();
-    expect(currentPageButton.closest("li").getAttribute("aria-label")).toBe(
-      "Current page, page\u00A02",
+    expect(currentPageButton.getAttribute("aria-label")).toBe(
+      "Current page, page 2",
     );
 
     // Ensure other buttons lack aria-current
     const otherButtons = Array.from(
-      el.shadowRoot.querySelectorAll("button.content"),
+      el.shadowRoot.querySelectorAll("button"),
     ).filter((btn) => btn !== currentPageButton);
     for (const btn of otherButtons) {
-      expect(btn.closest("li").hasAttribute("aria-current")).toBe(false);
+      expect(btn.hasAttribute("aria-current")).toBe(false);
     }
   });
 
@@ -185,11 +193,11 @@ describe("wc-pagination", () => {
     el.setAttribute("current", "1");
     document.body.appendChild(el);
 
-    const firstLi = getButtonByText(el.shadowRoot, "←").closest("li");
-    const lastLi = getButtonByText(el.shadowRoot, "→").closest("li");
+    const firstLi = getButtonByText(el.shadowRoot, "←");
+    const lastLi = getButtonByText(el.shadowRoot, "→");
 
     expect(firstLi.getAttribute("aria-label")).toBe("Already on page 1");
-    expect(lastLi.getAttribute("aria-label")).toBe("Goto page\u00A05");
+    expect(lastLi.getAttribute("aria-label")).toBe("Go to page 5");
   });
 
   test("has proper role and label on root <ol>", () => {
@@ -198,10 +206,9 @@ describe("wc-pagination", () => {
     el.setAttribute("page-size", "10");
     document.body.appendChild(el);
 
-    const ol = el.shadowRoot.querySelector("ol");
+    const ol = el.shadowRoot.querySelector("nav");
     expect(ol).toBeTruthy();
-    expect(ol.getAttribute("aria-label")).toBe("Pagination Navigation");
-    expect(ol.getAttribute("role")).toBe("navigation");
+    expect(ol.getAttribute("aria-label")).toBe("Pagination");
   });
 
   test("page number buttons are native <button> elements", () => {
@@ -210,9 +217,7 @@ describe("wc-pagination", () => {
     el.setAttribute("page-size", "10");
     document.body.appendChild(el);
 
-    const buttons = Array.from(
-      el.shadowRoot.querySelectorAll("button.content"),
-    );
+    const buttons = Array.from(el.shadowRoot.querySelectorAll("button"));
     const first = buttons[0]; // ←
     const last = buttons[buttons.length - 1]; // →
 

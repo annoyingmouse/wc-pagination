@@ -55,7 +55,7 @@ class WCPagination extends HTMLElement {
                   outline-offset: 2px;
                 }
                 &:disabled {
-                  cursor: not-allowed;
+                  cursor: default;
                 }
                 &[aria-current="page"] {
                   border: none;
@@ -113,10 +113,21 @@ class WCPagination extends HTMLElement {
               (page) => `
             <li>  
               <button type="button"
-                      data-page="${page}"
-                      aria-label="${page === this.current ? ["Current page,", `page ${page}`].join(" ") : ["Go to page", `${page}`].join(" ")}"
-                      title="${page === this.current ? ["Current page, page", `${page}`].join(" ") : ["Go to page", `${page}`].join(" ")}"
-                      ${page === this.current ? [`aria-current="page"`, "disabled", `aria-disabled="true"`].join(" ") : [`data-target="${page}"`].join(" ")}
+                      ${
+                        page === this.current
+                          ? 'aria-current="page" aria-disabled="true"'
+                          : `data-target="${page}"`
+                      }
+                      aria-label="${
+                        page === this.current
+                          ? ["Current page, page", page].join(" ")
+                          : ["Go to page", page].join(" ")
+                      }"
+                      title="${
+                        page === this.current
+                          ? ["Current page, page", page].join(" ")
+                          : ["Go to page", page].join(" ")
+                      }"
               >
                 ${page}
               </button>
@@ -154,6 +165,23 @@ class WCPagination extends HTMLElement {
     `;
   }
 
+  _refreshTabIndexes() {
+    const buttons = [...this.shadow.querySelectorAll("ol button")];
+    buttons.forEach((b) => (b.tabIndex = -1));
+    const current = this.shadow.querySelector('button[aria-current="page"]');
+    const fallback = buttons.find((b) => !b.disabled);
+    (current || fallback)?.setAttribute("tabindex", "0");
+  }
+
+  _focusCurrentIfNeeded() {
+    if (!this._pendingFocus) return;
+    const target =
+      this.shadow.querySelector('button[aria-current="page"]') ||
+      this.shadow.querySelector('button[tabindex="0"]');
+    target?.focus();
+    this._pendingFocus = false;
+  }
+
   generatePages() {
     const { current, totalPages } = this;
     const maxVisiblePages = 3;
@@ -175,6 +203,8 @@ class WCPagination extends HTMLElement {
 
   render() {
     this.shadow.innerHTML = `${this.css}${this.html}`;
+    this._refreshTabIndexes();
+    this._focusCurrentIfNeeded();
   }
 
   connectedCallback() {
@@ -182,17 +212,62 @@ class WCPagination extends HTMLElement {
       this._onClick = (e) => {
         const btn = e.target.closest("button");
         if (!btn) return;
-        if (btn.dataset.target) this.current = Number(btn.dataset.target);
+
+        // ignore 'aria-disabled' current page
+        if (btn.getAttribute("aria-disabled") === "true") return;
+
+        if (btn.dataset.target) {
+          this._pendingFocus = true; // user-initiated change → refocus after render
+          this.current = Number(btn.dataset.target);
+        }
       };
       this.shadow.addEventListener("click", this._onClick);
     }
+
+    if (!this._onKeydown) {
+      this._onKeydown = (e) => {
+        const btn = e.target.closest("button");
+        if (!btn || !this.shadow.contains(btn)) return;
+        if (e.altKey || e.ctrlKey || e.metaKey) return;
+
+        const set = (page) => {
+          if (page < 1 || page > this.totalPages) return;
+          this._pendingFocus = true; // refocus to new current
+          this.current = page;
+        };
+
+        switch (e.key) {
+          case "ArrowLeft":
+            set(this.current - 1);
+            e.preventDefault();
+            break;
+          case "ArrowRight":
+            set(this.current + 1);
+            e.preventDefault();
+            break;
+          case "Home":
+            set(1);
+            e.preventDefault();
+            break;
+          case "End":
+            set(this.totalPages);
+            e.preventDefault();
+            break;
+          // Do NOT handle 'Tab' / 'Shift+Tab' — let browser manage tab sequence.
+          default:
+            return;
+        }
+      };
+      this.shadow.addEventListener("keydown", this._onKeydown);
+    }
+
     this.render();
   }
 
   disconnectedCallback() {
-    if (this._onClick) {
-      this.shadow.removeEventListener("click", this._onClick);
-    }
+    if (this._onClick) this.shadow.removeEventListener("click", this._onClick);
+    if (this._onKeydown)
+      this.shadow.removeEventListener("keydown", this._onKeydown);
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
