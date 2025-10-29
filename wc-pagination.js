@@ -1,6 +1,6 @@
 class WCPagination extends HTMLElement {
   static get observedAttributes() {
-    return ["total", "pageSize", "current", "action"];
+    return ["total", "page-size", "current"];
   }
 
   constructor() {
@@ -22,61 +22,60 @@ class WCPagination extends HTMLElement {
           --active-text-color: #fff;
           --inactive-background-color: #fff;
         }
-        ol {
-          display: flex;
-          align-items: center;
-          margin: 0;
-          padding: 0;
-          list-style-type: none;
-          width: 100%;
-          text-align: right;
-        }
-        ol li {
-          display: inline-block;
-          cursor: pointer;
-        }
-        ol li.disabled {
-          cursor: not-allowed;
-        }
-        ol li .content {
-          background: none;
-          padding: 0;
-          font: inherit;
-          cursor: pointer;
-          text-decoration: none;
-          font-weight: bold;
-          background-color: var(--inactive-background-color);
-          color: var(--inactive-text-color);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          width: 40px;
-          height: 40px;
-          margin: 0 3px;
-          border: 1px solid var(--inactive-border-color);
-          user-select: none;
-        }
-        ol li:first-child .content{
-          margin-left: 0;        
-        }
-        ol li:last-child .content{
-          margin-right: 0;        
-        }
-        ol li[aria-current="true"] .content {
-          border: none;
-          background: none;
-          padding: 0;
-          margin: 0;
-          font: inherit;
-          cursor: pointer;
-          border-color: var(--active-border-color);
-          background-color: var(--active-background-color);
-          color: var(--active-text-color);
-          text-decoration: none;
-        }
-        ol li .content:focus {
-          outline: 2px solid var(--active-background-color);
-          outline-offset: 2px;
+        nav {
+          ol {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            width: 100%;
+            text-align: right;
+            li {
+              display: inline-block;
+              button {
+                background: none;
+                padding: 0;
+                font: inherit;
+                cursor: pointer;
+                text-decoration: none;
+                font-weight: bold;
+                background-color: var(--inactive-background-color);
+                color: var(--inactive-text-color);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 44px;
+                height: 44px;
+                border: 1px solid var(--inactive-border-color);
+                user-select: none;
+                &:focus-visible {
+                  outline: 2px solid var(--active-background-color);
+                  outline-offset: 2px;
+                }
+                &:disabled {
+                  cursor: not-allowed;
+                }
+                &[aria-current="page"] {
+                  border: none;
+                  background-color: var(--active-background-color);
+                  color: var(--active-text-color);
+                }
+              }
+            }
+          }
+          .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+          }
         }
       </style>
     `;
@@ -84,96 +83,89 @@ class WCPagination extends HTMLElement {
 
   get html() {
     return `
-      <ol aria-label="Pagination Navigation"
-          role="navigation" >
-        <li onClick="this.getRootNode().host.current = 1"
-            aria-label="${this.current === 1 ? "Already on page 1" : "Goto page 1"}"
-            title="${this.current === 1 ? "Already on page 1" : "Goto page 1"}"
-            ${this.current === 1 ? `class="disabled"` : ""}
-        }>
-          <button type="button"
-                  class="content"
-                  ${this.current === 1 ? "disabled aria-disabled" : ""}>
-            ←
-          </button>
-        </li>
-        ${
-          (this.totalPages > 3) && (this.current - 2 >= 1)
-            ? `
-          <li onClick="this.getRootNode().host.current  = this.getRootNode().host.current - 3 < 1 ? 1 : this.getRootNode().host.current - 3"
-              aria-label="Goto page&nbsp;${this.current - 3}"
-              title="Goto page&nbsp;${this.current - 3}">
+      <nav aria-label="Pagination">
+        <ol>
+          <li>
             <button type="button"
-                    class="content">…</button>
+                    aria-label="${this.current === 1 ? "Already on page 1" : "Go to page 1"}"
+                    title="${this.current === 1 ? "Already on page 1" : "Go to page 1"}"
+                    ${this.current === 1 ? ["disabled", `aria-disabled="true"`].join(" ") : `data-target="1"`}>
+              ←
+            </button>
           </li>
-        `
-            : ""
-        }
-        ${this.generatePages()
-          .map(
-            (page) => `
-          <li onClick="this.getRootNode().host.current = ${page}"
-              data-testid="page-${page}"
-              data-page="${page}"
-              aria-label="${page === this.current ? `Current page, page&nbsp;${page}` : `Goto page&nbsp;${page}`}"
-              title="${page === this.current ? `Current page, page&nbsp;${page}` : `Goto page&nbsp;page`}"
-              ${page === this.current ? `aria-current="true"` : ""}>  
+          ${
+            (this.totalPages > 3) && (this.current - 2 >= 1)
+              ? `
+            <li>
+              <button type="button"
+                      aria-label="${["Go to page", this.current - 3].join(" ")}"
+                      data-target="${this.current - 3}"
+                      title="${["Go to page", this.current - 3].join(" ")}">
+                <span aria-hidden="true">…</span>
+                <span class="sr-only">${["Jump back three pages, to page", this.current - 3].join(" ")}</span>
+              </button>
+            </li>
+          `
+              : ""
+          }
+          ${this.generatePages()
+            .map(
+              (page) => `
+            <li>  
+              <button type="button"
+                      data-page="${page}"
+                      aria-label="${page === this.current ? ["Current page,", `page ${page}`].join(" ") : ["Go to page", `${page}`].join(" ")}"
+                      title="${page === this.current ? ["Current page, page", `${page}`].join(" ") : ["Go to page", `${page}`].join(" ")}"
+                      ${page === this.current ? [`aria-current="page"`, "disabled", `aria-disabled="true"`].join(" ") : [`data-target="${page}"`].join(" ")}
+              >
+                ${page}
+              </button>
+            </li>
+          `,
+            )
+            .join("")}
+          ${
+            (this.totalPages > 3) && (this.current + 2 <= this.totalPages)
+              ? `
+            <li>
+              <button type="button"
+                      aria-label="${["Go to page", this.current + 3].join(" ")}"
+                      data-target="${this.current + 3}"
+                      title="${["Go to page", this.current + 3].join(" ")}">
+              <span aria-hidden="true">…</span>
+              <span class="sr-only">${["Jump forward three pages, to page", this.current + 3].join(" ")}</span>
+              </button>
+            </li>
+          `
+              : ""
+          }
+          <li>
             <button type="button"
-                    class="content">${page}</button>
+                    aria-label="${this.current === this.totalPages ? ["Already on page", this.totalPages].join(" ") : ["Go to page", this.totalPages].join(" ")}"
+                    title="${this.current === this.totalPages ? ["Already on page", this.totalPages].join(" ") : ["Go to page", this.totalPages].join(" ")}"
+                    ${this.current === this.totalPages ? ["disabled", `aria-disabled="true"`].join(" ") : `data-target="${this.totalPages}"`}
+            >
+              →
+            </button>
           </li>
-        `,
-          )
-          .join("")}
-        ${
-          (this.totalPages > 3) && (this.current + 2 <= this.totalPages)
-            ? `
-          <li onClick="this.getRootNode().host.current = this.getRootNode().host.current + 3 <= this.getRootNode().host.totalPages ? this.getRootNode().host.current + 3 : this.getRootNode().host.totalPages"
-              aria-label="Goto page&nbsp;${this.current + 3}"
-              title="Goto page&nbsp;${this.current + 3}">
-            <button type="button"
-                    class="content">…</button>
-          </li>
-        `
-            : ""
-        }
-        <li onClick="this.getRootNode().host.current = this.getRootNode().host.totalPages"
-            aria-label="${this.current === this.totalPages ? `Already on page&nbsp;${this.totalPages}` : `Goto page&nbsp;${this.totalPages}`}"
-            title="${this.current === this.totalPages ? `Already on page&nbsp;${this.totalPages}` : `Goto page&nbsp;${this.totalPages}`}"
-            ${this.current === this.totalPages ? `class="disabled"` : ""}
-        }>
-          <button type="button"
-                  class="content"
-                  ${this.current === this.totalPages ? "disabled aria-disabled" : ""}>
-            →
-          </button>
-        </li>
-      </ol>
+        </ol>
+        <p class="sr-only" aria-live="polite">Page ${this.current} of ${this.totalPages}</p>
+      </nav>
     `;
   }
 
   generatePages() {
     const { current, totalPages } = this;
     const maxVisiblePages = 3;
-
-    // 1. Determine the 'start' page of the range.
     let start;
     if (current === 1) {
-      // If on the first page, start at 1.
       start = 1;
     } else if (current === totalPages) {
-      // If on the last page, start at the largest number
-      // that still allows for 'maxVisiblePages' before the end.
       start = Math.max(1, totalPages - maxVisiblePages + 1);
     } else {
-      // If in the middle, start one page before the current page.
       start = Math.max(1, current - 1);
     }
-
-    // 2. Determine the 'end' page of the range.
-    // The range should end either 3 pages after the start, or at totalPages, whichever is smaller.
     const end = Math.min(totalPages, start + maxVisiblePages - 1);
-
-    // 3. Generate the array.
     const pages = [];
     for (let i = start; i <= end; i++) {
       pages.push(i);
@@ -186,8 +178,23 @@ class WCPagination extends HTMLElement {
   }
 
   connectedCallback() {
+    if (!this._onClick) {
+      this._onClick = (e) => {
+        const btn = e.target.closest("button");
+        if (!btn) return;
+        if (btn.dataset.target) this.current = Number(btn.dataset.target);
+      };
+      this.shadow.addEventListener("click", this._onClick);
+    }
     this.render();
   }
+
+  disconnectedCallback() {
+    if (this._onClick) {
+      this.shadow.removeEventListener("click", this._onClick);
+    }
+  }
+
   attributeChangedCallback(name, oldValue, newValue) {
     if (oldValue !== newValue) {
       this.render();

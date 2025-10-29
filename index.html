@@ -31,7 +31,8 @@
     </p>
     <p>Demo here: <a href="https://codepen.io/annoyingmouse/pen/YzOMYyv">https://codepen.io/annoyingmouse/pen/YzOMYyv</a></p>
     <p>Adapted from the Vue component detailed here: <a href="https://drmsite.blogspot.com/2019/11/vuejs-pagination.html">VueJS Pagination</a>, following this article on <a href="https://www.a11ymatters.com/pattern/pagination/">a11ymatters</a>.</p>
-    <p>Custom event now triggered on page change - check the last example here and the accompanying JavaScript file (Thanks go to <a href="https://github.com/MurzNN">Alexey Murz Korepov</a> for the prompt). I've also added custom colours.</p>
+    <p>Custom event now triggered on page change - check the last example here and the accompanying JavaScript file (Thanks go to <a href="https://github.com/MurzNN">Alexey Murz Korepov</a> for the prompt).</p>
+    <p>I've also implemented the previously added custom colours functionality.</p>
     <h2>Installation</h2>
     <pre style='color:#000000;background:#ffffff;'><span style='color:#a65700; '>&lt;</span><span style='color:#800000; font-weight:bold; '>script</span><span style='color:#274796; '> </span><span style='color:#074726; '>type</span><span style='color:#808030; '>=</span><span style='color:#0000e6; '>"module"</span><span style='color:#274796; '> </span><span style='color:#074726; '>src</span><span style='color:#808030; '>=</span><span style='color:#0000e6; '>"https://unpkg.com/@annoyingmouse/wc-pagination/wc-pagination.js"</span><span style='color:#a65700; '>></span><span style='color:#a65700; '>&lt;/</span><span style='color:#800000; font-weight:bold; '>script</span><span style='color:#a65700; '>></span></pre>
     <p>Alternatively:</p>
@@ -45,43 +46,43 @@
     <wc-pagination total="1000"
                    current="1"
                    page-size="10"></wc-pagination>
-    <h3>Starting at page the first page with a small total</h3>
-    <wc-pagination total="23"
-                   current="1"
-                   page-size="10"></wc-pagination>
-    <h3>Starting at page the first page with a smaller total</h3>
-    <wc-pagination total="13"
-                   current="1"
-                   page-size="10"></wc-pagination>
-    <h3>Starting at page the first page with a minimal total</h3>
-    <wc-pagination total="1"
-                   current="1"
-                   page-size="10"></wc-pagination>
-    <h3>Starting at the last page</h3>
-    <wc-pagination total="1000"
-                   current="100"
-                   page-size="10"></wc-pagination>
-    <h3>Starting in the middle</h3>
-    <wc-pagination total="1000"
-                   current="50"
-                   page-size="10"></wc-pagination>
-    <h3>Iterating through the pages</h3>
-    <wc-pagination id="increment"
-                   total="1000"
-                   current="1"
-                   page-size="10"></wc-pagination>
-    <h3>From first to last</h3>
-    <wc-pagination id="first2last"
-                   total="1000"
-                   current="1"
-                   page-size="10"></wc-pagination>
-    <h3>Custom event listener. Currently on page:  <span id="custom-event-listener-value"></span>. With added custom CSS!</h3>
-    <wc-pagination id="custom-event-listener"
-                   total="1000"
-                   current="1"
-                   page-size="10"></wc-pagination>
-    <script src="main.js"></script>
-<!--    <script type="module" src="wc-pagination.js"></script>-->
-    <script type="module" src="dist/wc-pagination.min.js"></script>
+<!--    <h3>Starting at page the first page with a small total</h3>-->
+<!--    <wc-pagination total="23"-->
+<!--                   current="1"-->
+<!--                   page-size="10"></wc-pagination>-->
+<!--    <h3>Starting at page the first page with a smaller total</h3>-->
+<!--    <wc-pagination total="13"-->
+<!--                   current="1"-->
+<!--                   page-size="10"></wc-pagination>-->
+<!--    <h3>Starting at page the first page with a minimal total</h3>-->
+<!--    <wc-pagination total="1"-->
+<!--                   current="1"-->
+<!--                   page-size="10"></wc-pagination>-->
+<!--    <h3>Starting at the last page</h3>-->
+<!--    <wc-pagination total="1000"-->
+<!--                   current="100"-->
+<!--                   page-size="10"></wc-pagination>-->
+<!--    <h3>Starting in the middle</h3>-->
+<!--    <wc-pagination total="1000"-->
+<!--                   current="50"-->
+<!--                   page-size="10"></wc-pagination>-->
+<!--    <h3>Iterating through the pages</h3>-->
+<!--    <wc-pagination id="increment"-->
+<!--                   total="1000"-->
+<!--                   current="1"-->
+<!--                   page-size="10"></wc-pagination>-->
+<!--    <h3>From first to last</h3>-->
+<!--    <wc-pagination id="first2last"-->
+<!--                   total="1000"-->
+<!--                   current="1"-->
+<!--                   page-size="10"></wc-pagination>-->
+<!--    <h3>Custom event listener. Currently on page:  <span id="custom-event-listener-value"></span>. With added custom CSS!</h3>-->
+<!--    <wc-pagination id="custom-event-listener"-->
+<!--                   total="1000"-->
+<!--                   current="1"-->
+<!--                   page-size="10"></wc-pagination>-->
+<!--    <script src="main.js"></script>-->
+    <script type="module" src="wc-pagination.js"></script>
+<!--    <script type="module" src="dist/wc-pagination.min.js"></script>-->
   </body>
 </html>

@@ -1,4 +1,6 @@
-This web component creates a pagination element.
+# <wc-pagination>
+
+This web component creates a mostly accessible (please see [note](#accessibility_note)) pagination element.
 
 ## Usage
 
@@ -8,16 +10,17 @@ This web component creates a pagination element.
                page-size="15"></wc-pagination>
 <script type="module" src="wc-pagination.js"></script>
 ```
-
 ## Configuration
 
 The pagination relies on three attributes.
 
-Adding a `total` number variable is the total number of records.
+* The `total` number variable is the total number of records.
+* The `current` number variable indicates the current page.
+* The `page-size` number variable specifies the number of records per page.
 
-Adding a `current` number variable is the current page.
+## <a id="accessibility_note">Accessibility note</a>
 
-Adding a `page-size` number variable is the number of records to be shown on the page.
+Lots of accessibility features have been added recently, but I'm sure I'm missing some; please do get in touch with any issues you discover, as I'm hoping to make this as accessible as possible.
 
 ## License
 
