@@ -1,0 +1,31 @@
+name: test-coverage
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  jest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install deps
+        run: npm ci
+
+      # If you already added collectCoverageFrom in jest.config.js to only include wc-pagination.js,
+      # you can just run "npm run test:coverage" here instead.
+      - name: Run tests with coverage (single file)
+      - run: npm run test:coverage
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage
