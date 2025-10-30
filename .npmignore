@@ -4,11 +4,13 @@ rollup.config.js
 .prettierrc
 style/
 .github/
-coverage/
 plugins/stripTemplateWhitespace.js
-.idea
 package.json
 biome.json
 jest.config.js
 jest.setup.js
-wc-pagination.test.js
+/.idea
+/node_modules
+/coverage
+/plugins
+/tests
