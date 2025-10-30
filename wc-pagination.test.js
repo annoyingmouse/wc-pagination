@@ -114,7 +114,6 @@ describe("wc-pagination", () => {
       el.shadowRoot,
       "… Jump back three pages, to page 2",
     );
-    console.log(ellipsisButton);
     expect(ellipsisButton).toBeTruthy();
 
     const handlePageChange = jest.fn();

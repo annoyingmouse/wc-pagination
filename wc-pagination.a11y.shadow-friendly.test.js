@@ -1,21 +1,12 @@
 /**
  * A11y-focused tests for <wc-pagination> that work with ShadowRoot in jsdom
- * -------------------------------------------------------------------------
- * If @testing-library/dom's `within()` doesn't accept ShadowRoot in your version,
- * these helpers query the shadow DOM directly and approximate accessible names.
- *
- * Dev deps still recommended:
- *   npm i -D @testing-library/jest-dom @testing-library/user-event
- *
- * Ensure Jest uses jsdom:
- *   testEnvironment: 'jsdom'
  */
 import { jest, test, expect, describe, beforeEach } from "@jest/globals";
 import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 
 // 🔧 Adjust this path to your component file
-import "../wc-pagination.js";
+import "./wc-pagination.js";
 
 /* ----------------------------- Helper utilities ----------------------------- */
 
@@ -94,7 +85,7 @@ describe("<wc-pagination>", () => {
   // --- Event dispatch: page number click ---
   test('dispatches "page-change" when a page number is clicked', () => {
     const el = document.createElement("wc-pagination");
-    el.setAttribute("total", "50");     // 5 pages
+    el.setAttribute("total", "50"); // 5 pages
     el.setAttribute("page-size", "10");
     document.body.appendChild(el);
 
@@ -142,7 +133,7 @@ describe("<wc-pagination>", () => {
 
   // --- Event dispatch: ellipsis buttons ---
 
-  test('ellipsis buttons have accessible names and dispatch jumps', () => {
+  test("ellipsis buttons have accessible names and dispatch jumps", () => {
     const el = document.createElement("wc-pagination");
     el.setAttribute("total", "100"); // 10 pages
     el.setAttribute("page-size", "10");
@@ -153,21 +144,26 @@ describe("<wc-pagination>", () => {
     el.addEventListener("page-change", onChange);
 
     // Forward first (avoids stale reference after DOM re-render)
-    let fwd3  = getButtonByName(el.shadowRoot, /go to page 8/i);
+    let fwd3 = getButtonByName(el.shadowRoot, /go to page 8/i);
     expect(fwd3).toBeTruthy();
     fwd3.click();
-    expect(onChange).toHaveBeenLastCalledWith(expect.objectContaining({ detail: { page: 8 } }));
+    expect(onChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({ detail: { page: 8 } }),
+    );
 
     // Reset to page 5 and test the back ellipsis
     el.setAttribute("current", "5");
     onChange.mockClear();
 
     let back3 = getButtonByName(el.shadowRoot, /go to page 2/i);
-    expect(back3.querySelector('span[aria-hidden="true"]')?.textContent?.trim()).toBe("…");
+    expect(
+      back3.querySelector('span[aria-hidden="true"]')?.textContent?.trim(),
+    ).toBe("…");
     back3.click();
-    expect(onChange).toHaveBeenLastCalledWith(expect.objectContaining({ detail: { page: 2 } }));
+    expect(onChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({ detail: { page: 2 } }),
+    );
   });
-
 
   // --- Disabled arrows should NOT dispatch ---
   test("disabled first/last arrows are unfocusable and inert", () => {
@@ -221,7 +217,7 @@ describe("<wc-pagination>", () => {
     document.body.appendChild(el);
 
     const nav = el.shadowRoot.querySelector("nav");
-    const ol  = el.shadowRoot.querySelector("nav > ol");
+    const ol = el.shadowRoot.querySelector("nav > ol");
     expect(nav).toHaveAttribute("aria-label", "Pagination");
     expect(ol.hasAttribute("role")).toBe(false);
   });
@@ -261,13 +257,19 @@ describe("<wc-pagination>", () => {
     currentBtn.focus();
 
     await user.keyboard("{ArrowRight}"); // → 4
-    expect(onChange).toHaveBeenLastCalledWith(expect.objectContaining({ detail: { page: 4 } }));
+    expect(onChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({ detail: { page: 4 } }),
+    );
 
     await user.keyboard("{Home}"); // → 1
-    expect(onChange).toHaveBeenLastCalledWith(expect.objectContaining({ detail: { page: 1 } }));
+    expect(onChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({ detail: { page: 1 } }),
+    );
 
     await user.keyboard("{End}"); // → 5
-    expect(onChange).toHaveBeenLastCalledWith(expect.objectContaining({ detail: { page: 5 } }));
+    expect(onChange).toHaveBeenLastCalledWith(
+      expect.objectContaining({ detail: { page: 5 } }),
+    );
 
     onChange.mockClear();
     await user.keyboard("{Tab}"); // should not dispatch
@@ -288,6 +290,8 @@ describe("<wc-pagination>", () => {
     el.setAttribute("current", "2");
     el.setAttribute("current", "3");
     el.setAttribute("current", "4");
+
+    onChange.mockClear();
 
     const go5 = getButtonByName(el.shadowRoot, /go to page 5/i);
     go5.click();
