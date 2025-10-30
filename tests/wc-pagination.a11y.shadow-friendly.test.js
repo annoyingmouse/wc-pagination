@@ -6,7 +6,7 @@ import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 
 // 🔧 Adjust this path to your component file
-import "./wc-pagination.js";
+import "../wc-pagination.js";
 
 /* ----------------------------- Helper utilities ----------------------------- */
 
