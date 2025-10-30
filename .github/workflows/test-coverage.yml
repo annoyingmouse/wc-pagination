@@ -20,8 +20,6 @@ jobs:
       - name: Install deps
         run: npm ci
 
-      # If you already added collectCoverageFrom in jest.config.js to only include wc-pagination.js,
-      # you can just run "npm run test:coverage" here instead.
       - name: Run tests with coverage (single file)
       - run: npm run test:coverage
       - name: Upload coverage report
