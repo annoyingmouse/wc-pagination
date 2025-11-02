@@ -167,7 +167,9 @@ class WCPagination extends HTMLElement {
 
   _refreshTabIndexes() {
     const buttons = [...this.shadow.querySelectorAll("ol button")];
-    buttons.forEach((b) => (b.tabIndex = -1));
+    for (const b of buttons) {
+      b.tabIndex = -1;
+    }
     const current = this.shadow.querySelector('button[aria-current="page"]');
     const fallback = buttons.find((b) => !b.disabled);
     (current || fallback)?.setAttribute("tabindex", "0");
