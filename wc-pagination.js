@@ -1,5 +1,3 @@
-import css from "/wc-pagination.css" with { type: "css" };
-
 class WCPagination extends HTMLElement {
   static get observedAttributes() {
     return ["total", "page-size", "current"];
@@ -10,7 +8,77 @@ class WCPagination extends HTMLElement {
     this.shadow = this.attachShadow({
       mode: "open",
     });
-    this.shadowRoot.adoptedStyleSheets.push(css);
+  }
+
+  get css() {
+    return `
+      <style>
+        :host {
+          display: inline-block;
+          --active-border-color: #2c3e50;
+          --active-background-color: #2c3e50;
+          --inactive-border-color: #e5e5e5;
+          --inactive-text-color: #7f8c8d;
+          --active-text-color: #fff;
+          --inactive-background-color: #fff;
+        }
+        nav {
+          ol {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            width: 100%;
+            text-align: right;
+            li {
+              display: inline-block;
+              button {
+                background: none;
+                padding: 0;
+                font: inherit;
+                cursor: pointer;
+                text-decoration: none;
+                font-weight: bold;
+                background-color: var(--inactive-background-color);
+                color: var(--inactive-text-color);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 44px;
+                height: 44px;
+                border: 1px solid var(--inactive-border-color);
+                user-select: none;
+                &:focus-visible {
+                  outline: 2px solid var(--active-background-color);
+                  outline-offset: 2px;
+                }
+                &:disabled {
+                  cursor: default;
+                }
+                &[aria-current="page"] {
+                  border: none;
+                  background-color: var(--active-background-color);
+                  color: var(--active-text-color);
+                }
+              }
+            }
+          }
+          .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+          }
+        }
+      </style>
+    `
   }
 
   get html() {
@@ -134,7 +202,7 @@ class WCPagination extends HTMLElement {
   }
 
   render() {
-    this.shadow.innerHTML = this.html;
+    this.shadow.innerHTML = `${this.css}${this.html}`;
     this._refreshTabIndexes();
     this._focusCurrentIfNeeded();
   }
