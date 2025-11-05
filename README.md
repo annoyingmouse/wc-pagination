@@ -2,6 +2,10 @@
 
 This web component creates a mostly accessible (please see [note](#accessibility_note)) pagination element.
 
+## Demo 
+
+https://codepen.io/annoyingmouse/pen/YzOMYyv
+
 ## Usage
 
 ```html

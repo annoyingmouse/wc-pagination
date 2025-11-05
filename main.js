@@ -8,7 +8,6 @@
   customEventListener.addEventListener(
     "page-change",
     function (e) {
-      console.log(e);
       customEventListenerValue.innerText = e.detail.page;
     },
     false,
