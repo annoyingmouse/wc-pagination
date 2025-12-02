@@ -78,7 +78,7 @@ class WCPagination extends HTMLElement {
           }
         }
       </style>
-    `
+    `;
   }
 
   get html() {

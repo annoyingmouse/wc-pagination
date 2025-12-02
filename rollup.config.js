@@ -13,6 +13,6 @@ export default {
     stripTemplateWhitespace({
       html: true, // remove spaces between tags
       tightText: true, // also trim text-node edges for max compression
-    })
+    }),
   ],
 };

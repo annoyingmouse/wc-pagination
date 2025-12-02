@@ -1,0 +1,364 @@
+{
+  "schemaVersion": "1.0.0",
+  "readme": "",
+  "modules": [
+    {
+      "kind": "javascript-module",
+      "path": "jest.setup.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "main.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "wc-pagination.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "WCPagination",
+          "members": [
+            {
+              "kind": "field",
+              "name": "css",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "html",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "_refreshTabIndexes"
+            },
+            {
+              "kind": "method",
+              "name": "_focusCurrentIfNeeded"
+            },
+            {
+              "kind": "method",
+              "name": "generatePages"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            },
+            {
+              "kind": "field",
+              "name": "total",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "current"
+            },
+            {
+              "kind": "field",
+              "name": "pageSize",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "totalPages",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "shadow"
+            }
+          ],
+          "events": [
+            {
+              "name": "page-change",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "total"
+            },
+            {
+              "name": "page-size"
+            },
+            {
+              "name": "current"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "wc-pagination",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "wc-pagination",
+          "declaration": {
+            "name": "WCPagination",
+            "module": "wc-pagination.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "wc-pagination.proper.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "WCPagination",
+          "members": [
+            {
+              "kind": "field",
+              "name": "html",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "_refreshTabIndexes"
+            },
+            {
+              "kind": "method",
+              "name": "_focusCurrentIfNeeded"
+            },
+            {
+              "kind": "method",
+              "name": "generatePages"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            },
+            {
+              "kind": "field",
+              "name": "total",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "current"
+            },
+            {
+              "kind": "field",
+              "name": "pageSize",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "totalPages",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "shadow"
+            }
+          ],
+          "events": [
+            {
+              "name": "page-change",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "total"
+            },
+            {
+              "name": "page-size"
+            },
+            {
+              "name": "current"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "wc-pagination",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "wc-pagination",
+          "declaration": {
+            "name": "WCPagination",
+            "module": "wc-pagination.proper.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "coverage/block-navigation.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "coverage/prettify.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "coverage/sorter.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "dist/wc-pagination.min.js",
+      "declarations": [
+        {
+          "kind": "class",
+          "description": "",
+          "name": "t",
+          "members": [
+            {
+              "kind": "field",
+              "name": "css",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "html",
+              "readonly": true
+            },
+            {
+              "kind": "method",
+              "name": "_refreshTabIndexes"
+            },
+            {
+              "kind": "method",
+              "name": "_focusCurrentIfNeeded"
+            },
+            {
+              "kind": "method",
+              "name": "generatePages"
+            },
+            {
+              "kind": "method",
+              "name": "render"
+            },
+            {
+              "kind": "field",
+              "name": "total",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "current"
+            },
+            {
+              "kind": "field",
+              "name": "pageSize",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "totalPages",
+              "readonly": true
+            },
+            {
+              "kind": "field",
+              "name": "shadow"
+            }
+          ],
+          "events": [
+            {
+              "name": "page-change",
+              "type": {
+                "text": "CustomEvent"
+              }
+            }
+          ],
+          "attributes": [
+            {
+              "name": "total"
+            },
+            {
+              "name": "page-size"
+            },
+            {
+              "name": "current"
+            }
+          ],
+          "superclass": {
+            "name": "HTMLElement"
+          },
+          "tagName": "wc-pagination",
+          "customElement": true
+        }
+      ],
+      "exports": [
+        {
+          "kind": "custom-element-definition",
+          "name": "wc-pagination",
+          "declaration": {
+            "name": "t",
+            "module": "dist/wc-pagination.min.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "plugins/stripTemplateWhitespace.js",
+      "declarations": [
+        {
+          "kind": "function",
+          "name": "stripTemplateWhitespace",
+          "parameters": [
+            {
+              "name": "options",
+              "default": "{}"
+            }
+          ],
+          "description": "Rollup plugin to compress whitespace inside template literals.\n\nOptions:\n- include / exclude: rollup plugin filter globs\n- html: remove spaces between HTML tags (/> </ -> '><')\n- tightText: also trim spaces around text nodes (e.g. <p> Hello </p> -> <p>Hello</p>)"
+        }
+      ],
+      "exports": [
+        {
+          "kind": "js",
+          "name": "default",
+          "declaration": {
+            "name": "stripTemplateWhitespace",
+            "module": "plugins/stripTemplateWhitespace.js"
+          }
+        }
+      ]
+    },
+    {
+      "kind": "javascript-module",
+      "path": "coverage/lcov-report/block-navigation.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "coverage/lcov-report/prettify.js",
+      "declarations": [],
+      "exports": []
+    },
+    {
+      "kind": "javascript-module",
+      "path": "coverage/lcov-report/sorter.js",
+      "declarations": [],
+      "exports": []
+    }
+  ]
+}
